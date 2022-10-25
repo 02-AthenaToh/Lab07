@@ -1,22 +1,33 @@
 ﻿﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 //This script manages the spawning of obstacles
 public class ObstacleSpawner : MonoBehaviour
 {
-    [SerializeField] private GameObject Obstacle = null;
-    [SerializeField] private float SpawnInterval = 1;
-    private float NextSpawn = 0;
+    public float sendTimer = 1;
+    public float frequency = 2;
+    public float position;
+    public GameObject Obstacle;
+    public GameObject AngryDuck;
+
+    [SerializeField] private Text txt_score = null;
+    [SerializeField] private Text txt_message = null;
 
     void Update()
     {
-        if(Time.time >= NextSpawn)
+        sendTimer -= Time.deltaTime;
+        if (sendTimer <= 0)
         {
-            NextSpawn = Time.time + SpawnInterval;
-            Vector3 SpawnPos = new Vector3(8, Random.Range(-3, 3), 0);
-
-            Instantiate(Obstacle, SpawnPos, Quaternion.identity);
+            position = Random.Range(.68f, 2f);
+            transform.position = new Vector3(0, position, -3.7f);
+            Instantiate(Obstacle, transform.position, transform.rotation);
+            sendTimer = frequency;
         }
+
+        if (AngryDuck != null) Time.timeScale = 1;
+        else Time.timeScale = 0;
+
     }
 }

@@ -8,7 +8,12 @@ public class GameManager : MonoBehaviour
     public static GameManager thisManager = null;  
     [SerializeField] private Text Txt_Score = null;
     [SerializeField] private Text Txt_Message = null;
-    private int Score = 0;
+    private int score = 0;
+
+    private float scoreInterval = 1f;
+    private float nextScore = 2.5f;
+
+    public Text scoreText;
 
     void Start()
     {
@@ -20,17 +25,24 @@ public class GameManager : MonoBehaviour
     {
         if (Time.timeScale == 0 && Input.GetKeyDown(KeyCode.Return))
             StartGame();
+
+        if (Time.time >= nextScore)
+        {
+            nextScore = Time.time + scoreInterval;
+            score++;
+        }
+        scoreText.text = "Score: " + score;
     }
 
     public void UpdateScore(int value)
     {
-        Score += value;
-        Txt_Score.text = "SCORE : " + Score;
+        score += value;
+        Txt_Score.text = "SCORE : " + score;
     }
 
     private void StartGame()
     {
-        Score = 0;
+        score = 0;
         Time.timeScale = 1;
         Txt_Message.text = "";
         Txt_Score.text = "SCORE : 0";
